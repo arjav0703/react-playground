@@ -1,7 +1,8 @@
 "use client";
 import { Usertype } from "@/utils";
 import axios from "axios";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const UserPage = () => {
   const [user, setuser] = useState<Usertype[]>([]);
@@ -10,14 +11,23 @@ const UserPage = () => {
     console.log(res.data);
     setuser(res.data);
   };
+
+  useEffect(() => {
+    getusers();
+  }, []);
+
   return (
-    <div>
-      <button onClick={getusers}>get users</button>
-      <div>
+    <div className="mx-auto max-w-10/12">
+      <ul>
         {user.map((usmap) => {
-          return <div key={usmap.id}>{usmap.username}</div>;
+          return (
+            <li key={usmap.id}>
+              {usmap.username} --- {usmap.email} ----{" "}
+              <Link href={`/users/${usmap.id}`}>More details</Link>
+            </li>
+          );
         })}
-      </div>
+      </ul>
     </div>
   );
 };
